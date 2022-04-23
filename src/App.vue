@@ -1,12 +1,17 @@
 <template>
   <div id="app">
-    <button @click="addGlass1()">追加する1(赤)</button>
-    <button @click="addGlass2()">追加する2(緑)</button>
-    <button @click="addGlass3()">追加する3(青)</button>
     <button
-      @mousedown="mouseDown()"
+      @mousedown="mouseDown1()"
       @mouseup="mouseUp()"
-    >追加する</button>
+    >追加する1(赤)</button>
+    <button
+      @mousedown="mouseDown2()"
+      @mouseup="mouseUp()"
+    >追加する2(緑)</button>
+    <button
+      @mousedown="mouseDown3()"
+      @mouseup="mouseUp()"
+    >追加する3(青)</button>
     <button
       @click="resetGlass()"
     >リセット</button>
@@ -30,6 +35,21 @@
 // import HelloWorld from './components/HelloWorld.vue'
 const ADD_UNIT = 1
 const GLASS_LIMIT = 200
+const RED = {
+  r: 255,
+  g: 0,
+  b: 0
+}
+const GREEN = {
+  r: 0,
+  g: 255,
+  b: 0
+}
+const BLUE = {
+  r: 0,
+  g: 0,
+  b: 255
+}
 
 export default {
   name: 'App',
@@ -42,23 +62,7 @@ export default {
       mouseDownInterval: null,
       count1: 0,
       count2: 0,
-      count3: 0,
-      color1: {
-        r: 255,
-        g: 0,
-        b: 0
-      },
-      color2: {
-        r: 0,
-        g: 255,
-        b: 0
-      },
-
-      color3: {
-        r: 0,
-        g: 0,
-        b: 255
-      },
+      count3: 0
     }
   },
   computed:{
@@ -69,10 +73,13 @@ export default {
       return GLASS_LIMIT - this.computedGlassHeight
     },
     add_color(){
+      const color1 = RED
+      const color2 = GREEN
+      const color3 = BLUE
       return {
-        r: (this.color1.r * this.count1 + this.color2.r * this.count2 + this.color3.r * this.count3) / (this.count1 + this.count2 + this.count3),
-        g: (this.color1.g * this.count1 + this.color2.g * this.count2 + this.color3.g * this.count3) / (this.count1 + this.count2 + this.count3),
-        b: (this.color1.b * this.count1 + this.color2.b * this.count2 + this.color3.b * this.count3) / (this.count1 + this.count2 + this.count3)
+        r: (color1.r * this.count1 + color2.r * this.count2 + color3.r * this.count3) / (this.count1 + this.count2 + this.count3),
+        g: (color1.g * this.count1 + color2.g * this.count2 + color3.g * this.count3) / (this.count1 + this.count2 + this.count3),
+        b: (color1.b * this.count1 + color2.b * this.count2 + color3.b * this.count3) / (this.count1 + this.count2 + this.count3)
       }
     },
     computeCallrgb(){
@@ -80,15 +87,43 @@ export default {
     }
   },
   methods: {
-    mouseDown() {
+    resetMouseDownTime() {
       this.mouseDownTime = 0
+    },
+    glassHasSpaceValidate() {
+      return this.glass < GLASS_LIMIT
+    },
+    mouseDown1() {
+      this.resetMouseDownTime()
       this.mouseDownInterval = setInterval(
         () => {
-          if (this.glass < GLASS_LIMIT) {
-            this.glass += 1
+          if (this.glassHasSpaceValidate()) {
+            this.addGlass1()
           }
         },
-        1
+        ADD_UNIT
+      )
+    },
+    mouseDown2() {
+      this.resetMouseDownTime()
+      this.mouseDownInterval = setInterval(
+        () => {
+          if (this.glassHasSpaceValidate()) {
+            this.addGlass2()
+          }
+        },
+        ADD_UNIT
+      )
+    },
+    mouseDown3() {
+      this.resetMouseDownTime()
+      this.mouseDownInterval = setInterval(
+        () => {
+          if (this.glassHasSpaceValidate()) {
+            this.addGlass3()
+          }
+        },
+        ADD_UNIT
       )
     },
     mouseUp() {
@@ -97,16 +132,19 @@ export default {
     resetGlass() {
       this.glass = 0
     },
+    addGlass() {
+      this.glass += 1
+    },
     addGlass1() {
-      this.glass = this.glass + 1
+      this.addGlass()
       this.count1 += 1
     },
     addGlass2() {
-      this.glass = this.glass + 1
+      this.addGlass()
       this.count2 += 1
     },
     addGlass3() {
-      this.glass = this.glass + 1
+      this.addGlass()
       this.count3 += 1
     },
     rgb_to_css (color) {
