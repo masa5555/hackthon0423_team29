@@ -1,14 +1,31 @@
 <template>
   <div id="app">
-    <button @click="addGlass()">追加する</button>
+    <button
+      @mousedown="mouseDown()"
+      @mouseup="mouseUp()"
+    >追加する</button>
+    <button
+      @click="resetGlass()"
+    >リセット</button>
+
     <div class="glass_outer">
-      <div class="glass_inner" :style="{background:'lightblue', height: `${computedGlassHeight}px`, 'top': `${computedLiquidTop}px`}"></div>
+      <div
+        class="glass_inner"
+        :style="{
+          background:'lightblue',
+          height: `${computedGlassHeight}px`,
+          'top': `${computedLiquidTop}px`
+        }"
+      ></div>
     </div>
+
   </div>
 </template>
 
 <script>
 // import HelloWorld from './components/HelloWorld.vue'
+const ADD_UNIT = 1
+const GLASS_LIMIT = 200
 
 export default {
   name: 'App',
@@ -18,20 +35,34 @@ export default {
   data() {
     return {
       glass: 0,
-      ADD_UNIT: 10
+      mouseDownInterval: null,
     }
   },
   computed:{
     computedGlassHeight(){
-      return this.glass * this.ADD_UNIT
+      return this.glass * ADD_UNIT
     },
     computedLiquidTop() {
-      return 200 - this.computedGlassHeight
+      return GLASS_LIMIT - this.computedGlassHeight
     }
   },
   methods: {
-    addGlass() {
-      this.glass = this.glass + 1
+    mouseDown() {
+      this.mouseDownTime = 0
+      this.mouseDownInterval = setInterval(
+        () => {
+          if (this.glass < GLASS_LIMIT) {
+            this.glass += 1
+          }
+        },
+        1
+      )
+    },
+    mouseUp() {
+      clearInterval(this.mouseDownInterval)
+    },
+    resetGlass() {
+      this.glass = 0
     }
   }
 }
