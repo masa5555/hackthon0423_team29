@@ -25,24 +25,24 @@
           @mouseup="mouseUp()"
           v-bind:disabled="!active"
           class="button-red"
-        >追加する1(赤)</button>
+        >赤を追加する</button>
         <button
           @mousedown="mouseDown2()"
           @mouseup="mouseUp()"
           v-bind:disabled="!active"
           class="button-green"
-        >追加する2(緑)</button>
+        >緑を追加する</button>
         <button
           @mousedown="mouseDown3()"
           @mouseup="mouseUp()"
           v-bind:disabled="!active"
           class="button-blue"
-        >追加する3(青)</button>
+        >青を追加する</button>
         <button
           @mousedown="mouseDown4()"
           @mouseup="mouseUp()"
           class="button-reduce"
-        >追加する4(薄める)</button>
+        >薄める</button>
         <button
           @click="resetGlass()"
           class="button-reset"
@@ -302,7 +302,7 @@ export default {
 .bar-upper {
   padding-top: 50px;
   display: flex;
-  justify-content: space-between;
+  justify-content: space-around;
   width: 533px;
   height: 150px;
   background: grey;
