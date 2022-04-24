@@ -1,10 +1,10 @@
 <template>
   <div id="app">
     <p>{{time}}</p>
-    <button @click="recalc()">開始</button>
+    <button @click="recalc()" v-bind:disabled="start_active">開始</button>
     <br />
     <br />
-    <button @click="addGlass()">追加する</button>
+    <button @click="addGlass()" v-bind:disabled="add_active">追加する</button>
     <div class="glass_outer">
       <div class="glass_inner" :style="{background:'lightblue', height: `${computedGlassHeight}px`, 'top': `${computedLiquidTop}px`}"></div>
     </div>
@@ -23,7 +23,9 @@ export default {
     return {
       glass: 0,
       ADD_UNIT: 10,
-      time: `制限時間 0:30`
+      time: `制限時間 0:30`,
+      start_active: false,
+      add_active: true
     }
   },
   computed:{
@@ -48,6 +50,8 @@ export default {
     },
     recalc(){
       const self=this;
+      self.start_active=true;
+      self.add_active=false;
       self.time=`残り 0:30`;
       const time_limit=30;
       const start_time=new Date();
@@ -62,6 +66,8 @@ export default {
         self.time=`残り ${timer[0]}:${timer[1]}`;
         if (timer[1]==0) {
           self.time=`終了`;
+          self.start_active=false;
+          self.add_active=true;
           clearInterval(timerId);
         }
         else if(timer[1]<10){
