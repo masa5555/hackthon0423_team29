@@ -1,40 +1,65 @@
 <template>
-  <div id="app">
-    <p>{{time}}</p>
-    <button @click="recalc()" v-bind:disabled="active">開始</button>
-    <br />
-    <br />
-    お題
-    <div :style="{background:CallRandom,height:'50px',width:'50px',padding:'100px'}"></div>
-    <button
-      @mousedown="mouseDown1()"
-      @mouseup="mouseUp()"
-      v-bind:disabled="!active"
-    >追加する1(赤)</button>
-    <button
-      @mousedown="mouseDown2()"
-      @mouseup="mouseUp()"
-      v-bind:disabled="!active"
-    >追加する2(緑)</button>
-    <button
-      @mousedown="mouseDown3()"
-      @mouseup="mouseUp()"
-      v-bind:disabled="!active"
-    >追加する3(青)</button>
-    <button
-      @click="resetGlass()"
-    >リセット</button>
+  <div id="app" class="app">
 
-    <div class="glass_outer">
+    <div class="app-left">
+      <p>{{time}}</p>
+      <button @click="recalc()" v-bind:disabled="active">開始</button>
+      <br />
+      <br />
+      お題
       <div
-        class="glass_inner"
         :style="{
-          background: computeCallrgb,
-          height: `${computedGlassHeight}px`,
-          top: `${computedLiquidTop}px`
+          background:CallRandom,
+          height:'50px',
+          width:'50px',
+          padding:'50px'
         }"
       ></div>
     </div>
+
+    <div class="app-right">
+      <div class="bar-upper">
+        <button
+          @mousedown="mouseDown1()"
+          @mouseup="mouseUp()"
+          v-bind:disabled="!active"
+          class="button-red"
+        >追加する1(赤)</button>
+        <button
+          @mousedown="mouseDown2()"
+          @mouseup="mouseUp()"
+          v-bind:disabled="!active"
+          class="button-green"
+        >追加する2(緑)</button>
+        <button
+          @mousedown="mouseDown3()"
+          @mouseup="mouseUp()"
+          v-bind:disabled="!active"
+          class="button-blue"
+        >追加する3(青)</button>
+        <button
+          @click="resetGlass()"
+          class="button-reset"
+        >リセット</button>
+      </div>
+      <div class="bar-lower">
+        <div class="bar-lower-left"></div>
+        <div class="bar-lower-center">
+          <div class="glass_outer">
+            <div
+              class="glass_inner"
+              :style="{
+                background: computeCallrgb,
+                height: `${computedGlassHeight}px`,
+                top: `${computedLiquidTop}px`
+              }"
+            ></div>
+          </div>
+        </div>
+        <div class="bar-lower-right"></div>
+      </div>
+    </div>
+
   </div>
 </template>
 
@@ -66,7 +91,6 @@ export default {
   data() {
     return {
       glass: 0,
-      ADD_UNIT: 10,
       time: `制限時間 0:30`,
       active: false,
       mouseDownInterval: null,
@@ -149,9 +173,6 @@ export default {
       this.count2 = 0
       this.count3 = 0
     },
-    addGlass() {
-      this.glass = this.glass + 1
-    },
     countdown(finish_time){
       const now=new Date();
       const rest=finish_time-now.getTime();
@@ -186,6 +207,9 @@ export default {
 
       }, 1000);
     },
+    addGlass() {
+      this.glass = this.glass + 1
+    },
     addGlass1() {
       this.addGlass()
       this.count1 += 1
@@ -216,6 +240,45 @@ export default {
 </script>
 
 <style>
+.app {
+  display: flex;
+  margin-top: 50px;
+}
+.app-left, .app-right {
+  width: 45%;
+}
+.bar-upper {
+  display: flex;
+  justify-content: space-between;
+  width: 400px;
+  height: 100px;
+  background: grey;
+}
+.bar-lower {
+  display: flex;
+}
+.bar-lower-left, .bar-lower-right {
+  width: 100px;
+  height: 250px;
+  background: grey;
+}
+
+.button-red {
+  height: 50px;
+  background: indianred;
+}
+.button-green {
+  height: 50px;
+  background: lightgreen;
+}
+.button-blue {
+  height: 50px;
+  background: lightblue;
+}
+.button-reset {
+  height: 50px;
+}
+
 .glass_outer{
   width: 100px;
   height: 200px;
