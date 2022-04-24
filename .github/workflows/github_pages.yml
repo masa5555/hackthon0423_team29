@@ -16,15 +16,16 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: '16.x'
+        
+      - run: npm install
+      - run: npm run build
 
-      - name: npm
-        run: |
-          npm install
-          npm run build
+      - name: echo test
+        run: echo "aaaaa"
 
       - name: deploy
         uses: peaceiris/actions-gh-pages@v3
-        if: ${{ github.ref == 'refs/heads/master' }}
+        if: ${{ github.ref == 'refs/heads/main' }}
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./public
+          publish_dir: ./dist
