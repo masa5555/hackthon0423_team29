@@ -1,0 +1,20 @@
+.drop {
+    color:pink;
+}
+.drop:after {
+    --main-bg: blue;
+    background-color: var(--main-bg);
+}
+.drop:hover::after {
+    background-color:green;
+    /*
+    transform-origin: left top;
+    transform: scale(1, 1);
+    */
+}
+/*参考：Left in Right
+ホバーすると左から右にラインが引かれ、
+ホバーが外れた場合に左に戻らず右に向かって非表示になるアニメーション
+https://www.nxworld.net/css-hover-underline-animation-examples-and-sass-mixin.html*/
+
+/*タグ名の後の`:active`や:afterとは？→疑似クラス。*/
