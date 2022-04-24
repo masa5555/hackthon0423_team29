@@ -41,6 +41,7 @@
         <button
           @mousedown="mouseDown4()"
           @mouseup="mouseUp()"
+          class="button-reduce"
         >追加する4(薄める)</button>
         <button
           @click="resetGlass()"
@@ -299,17 +300,19 @@ export default {
   width: 45%;
 }
 .bar-upper {
+  padding-top: 50px;
   display: flex;
   justify-content: space-between;
-  width: 400px;
-  height: 100px;
+  width: 533px;
+  height: 150px;
   background: grey;
+  z-index: 100;
 }
 .bar-lower {
   display: flex;
 }
 .bar-lower-left, .bar-lower-right {
-  width: 100px;
+  width: 200px;
   height: 250px;
   background: grey;
 }
@@ -329,6 +332,9 @@ export default {
 .button-reset {
   height: 50px;
 }
+.button-reduce {
+  height: 50px;
+}
 
 .glass_outer{
   width: 100px;
@@ -342,11 +348,12 @@ export default {
   position: relative;
 }
 .glass_drop {
-  width: 20px;
-  height: 400px;
-  margin: -166px 90px 0;
   position: absolute;
-  opacity:1;
+  width: 20px;
+  top: 410px;
+  height: 250px;
+  margin: -160px 47px 0;
+  opacity: 1;
 }
 
 </style>
