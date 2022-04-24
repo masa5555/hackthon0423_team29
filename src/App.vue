@@ -22,7 +22,7 @@
         :style="{
           background: computeCallrgb,
           height: `${computedGlassHeight}px`,
-          'top': `${computedLiquidTop}px`
+          top: `${computedLiquidTop}px`
         }"
       ></div>
     </div>
@@ -131,6 +131,9 @@ export default {
     },
     resetGlass() {
       this.glass = 0
+      this.count1 = 0
+      this.count2 = 0
+      this.count3 = 0
     },
     addGlass() {
       this.glass += 1
