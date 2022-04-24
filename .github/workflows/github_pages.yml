@@ -17,10 +17,11 @@ jobs:
         with:
           node-version: '16.x'
         
-      - name: npm
-        run: |
-          npm install
-          npm run build
+      - run: npm install
+      - run: npm run build
+
+      - name: echo test
+        run: echo "aaaaa"
 
       - name: deploy
         uses: peaceiris/actions-gh-pages@v3
