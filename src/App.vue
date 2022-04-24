@@ -1,5 +1,8 @@
 <template>
   <div id="app">
+    <!--{{CreateRandomColor()}}-->
+    お題
+    <div :style="{background:CallRandom,height:'50px',width:'50px',padding:'100px'}"></div>
     <button
       @mousedown="mouseDown1()"
       @mouseup="mouseUp()"
@@ -26,8 +29,6 @@
         }"
       ></div>
     </div>
-
-    
   </div>
 </template>
 
@@ -62,7 +63,8 @@ export default {
       mouseDownInterval: null,
       count1: 0,
       count2: 0,
-      count3: 0
+      count3: 0,
+      //random: 1
     }
   },
   computed:{
@@ -84,8 +86,11 @@ export default {
     },
     computeCallrgb(){
       return this.rgb_to_css(this.add_color)
-    }
-  },
+      },
+    CallRandom(){
+      return this.rgb_to_css(this.CreateRandomColor())
+      }
+    },
   methods: {
     resetMouseDownTime() {
       this.mouseDownTime = 0
@@ -152,6 +157,17 @@ export default {
       const g = (parseInt(color.g)).toString(16).padStart(2, '0')
       const b = (parseInt(color.b)).toString(16).padStart(2, '0')
       return `#${r}${g}${b}`
+    },
+    //CreateRandom(){
+      //this.random = Math.floor(Math.random() * 256)
+      //return this.random
+    //}
+    CreateRandomColor(){
+      return{
+        r : Math.floor(Math.random() * 256),
+        g : Math.floor(Math.random() * 256),
+        b : Math.floor(Math.random() * 256)
+      }
     }
   }
 }
