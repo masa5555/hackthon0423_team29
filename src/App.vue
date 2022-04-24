@@ -3,14 +3,17 @@
 
     <div class="app-left">
       <p>{{time}}</p>
-      <p>スコア：{{ScoreCalculation(CreateRandomColor(),add_color)}}</p>
-      <button @click="recalc()" v-bind:disabled="active">開始</button>
-      <br />
-      <br />
-      お題
+      <p>スコア：{{ computedCurrentScore }}</p>
+      <button
+        @click="recalc()"
+        v-bind:disabled="active"
+        class="button-start"
+      >開始</button>
+      <p>お題</p>
       <div
+        v-if="target_color"
         :style="{
-          background:CallRandom,
+          background: CallRandom,
           height:'50px',
           width:'50px',
           padding:'50px'
@@ -41,26 +44,28 @@
         <button
           @mousedown="mouseDown4()"
           @mouseup="mouseUp()"
+          v-bind:disabled="!active"
           class="button-reduce"
         >薄める</button>
         <button
           @click="resetGlass()"
           class="button-reset"
+          v-bind:disabled="!active"
         >リセット</button>
       </div>
       <div class="bar-lower">
         <div class="bar-lower-left"></div>
         <div class="bar-lower-center">
           <div class="glass_outer">
-            <temp v-if="click1"><!--ボタンを押すと赤のジュースが出ます-->
+            <div v-if="click1"><!--ボタンを押すと赤のジュースが出ます-->
               <div class="glass_drop" :style="{background:'#ff0000'}"></div>
-            </temp>
-            <temp v-if="click2"><!--ボタンを押すと緑のジュースが出ます-->
+            </div>
+            <div v-if="click2"><!--ボタンを押すと緑のジュースが出ます-->
               <div class="glass_drop" :style="{background:'#00ff00'}"></div>
-            </temp>  
-            <temp v-if="click3"><!--ボタンを押すと青のジュースが出ます-->
+            </div>  
+            <div v-if="click3"><!--ボタンを押すと青のジュースが出ます-->
               <div class="glass_drop" :style="{background:'#0000ff'}"></div>
-            </temp>
+            </div>
             <div
               class="glass_inner"
               :style="{
@@ -97,7 +102,7 @@ const BLUE = {
   g: 0,
   b: 255
 }
-const WHITE ={
+const WHITE = {
   r:255,
   g:255,
   b:255
@@ -121,7 +126,7 @@ export default {
       click1: false,
       click2: false,
       click3: false,
-      score: 0
+      target_color: null
     }
   },
   computed:{
@@ -147,8 +152,11 @@ export default {
       },
     CallRandom(){
       return this.rgb_to_css(this.CreateRandomColor())
-      }
     },
+    computedCurrentScore() {
+      return this.ScoreCalculation()
+    }
+  },
   methods: {
     resetMouseDownTime() {
       this.mouseDownTime = 0
@@ -225,6 +233,9 @@ export default {
       return rest_time;
     },
     recalc(){
+      // 乱数初期化
+      this.target_color = this.CreateRandomColor()
+
       const self=this;
       self.active=true;
       self.time=`残り 0:30`;
@@ -235,20 +246,21 @@ export default {
       while(new Date()-start_time<500);
       self.time=`残り 0:29`;
 
-      let timerId=setInterval(function(){
-
-        const timer=self.countdown(finish_time);
-        self.time=`残り ${timer[0]}:${timer[1]}`;
-        if (timer[1]==0) {
-          self.time=`終了`;
-          self.active=false;
-          clearInterval(timerId);
-        }
-        else if(timer[1]<10){
-          self.time=`残り ${timer[0]}:0${timer[1]}`;
-        }
-
-      }, 1000);
+      let timerId = setInterval(
+        function(){
+          const timer=self.countdown(finish_time);
+          self.time=`残り ${timer[0]}:${timer[1]}`;
+          if (timer[1]==0) {
+            self.time=`終了`;
+            self.active=false;
+            clearInterval(timerId);
+          }
+          else if(timer[1]<10){
+            self.time=`残り ${timer[0]}:0${timer[1]}`;
+          }
+        },
+        1000
+      );
     },
     addGlass() {
       this.glass += 0.1
@@ -276,16 +288,27 @@ export default {
       return `#${r}${g}${b}`
     },
     CreateRandomColor(){
-      return{
+      return {
         r : Math.floor(Math.random() * 256),
         g : Math.floor(Math.random() * 256),
         b : Math.floor(Math.random() * 256)
       }
     },
-    ScoreCalculation(color_random,color_create){
-      this.score = Math.ceil((255 - Math.abs(color_random.r-color_create.r)) * (255 - Math.abs(color_random.g-color_create.g)) * (255 - Math.abs(color_random.b-color_create.b)) / (255 ** 3)* 100)
-      return this.score      
+    ScoreCalculation(){
+      if (!this.target_color) {
+        return '-'
       }
+
+      const score = Math.ceil(
+        (
+          (255 - Math.abs(this.target_color.r - this.add_color.r)) *
+          (255 - Math.abs(this.target_color.g - this.add_color.g)) *
+          (255 - Math.abs(this.target_color.b - this.add_color.b)) /
+          (255 ** 3)
+        ) * 100
+      )
+      return score
+    }
   }
 }
 </script>
@@ -328,6 +351,10 @@ export default {
 .button-blue {
   height: 50px;
   background: lightblue;
+}
+.button-start {
+  height: 50px;
+  width: 100px;
 }
 .button-reset {
   height: 50px;
