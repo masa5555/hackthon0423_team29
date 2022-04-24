@@ -21,6 +21,8 @@ jobs:
         run: |
           npm install
           npm run build
+          mv dist public
+          npm run serve
 
       - name: deploy
         uses: peaceiris/actions-gh-pages@v3
