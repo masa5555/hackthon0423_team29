@@ -151,7 +151,7 @@ export default {
       return this.rgb_to_css(this.add_color)
       },
     CallRandom(){
-      return this.rgb_to_css(this.CreateRandomColor())
+      return this.rgb_to_css(this.target_color)
     },
     computedCurrentScore() {
       return this.ScoreCalculation()
