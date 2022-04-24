@@ -47,11 +47,11 @@ export default {
       return rest_time;
     },
     recalc(){
+      const self=this;
+      self.time=`残り 0:30`;
       const time_limit=30;
-      this.time=`残り 0:30`;
       const start_time=new Date();
       const finish_time=start_time.getTime()+time_limit*1000;
-      const self=this;
 
       while(new Date()-start_time<500);
       self.time=`残り 0:29`;
