@@ -7,6 +7,17 @@
       <br />
       <br />
       お題
+    <temp v-if="click1"><!--ボタンを押すと赤のジュースが出ます-->
+      <div class="glass_drop" :style="{background:'#ff0000'}"></div>
+    </temp>
+    <temp v-if="click2"><!--ボタンを押すと緑のジュースが出ます-->
+      <div class="glass_drop" :style="{background:'#00ff00'}"></div>
+    </temp>  
+    <temp v-if="click3"><!--ボタンを押すと青のジュースが出ます-->
+      <div class="glass_drop" :style="{background:'#0000ff'}"></div>
+    </temp>
+
+    <div class="glass_outer">
       <div
         :style="{
           background:CallRandom,
@@ -97,7 +108,9 @@ export default {
       count1: 0,
       count2: 0,
       count3: 0,
-      //random: 1
+      click1: false,
+      click2: false,
+      click3: false,
     }
   },
   computed:{
@@ -132,6 +145,7 @@ export default {
       return this.glass < GLASS_LIMIT
     },
     mouseDown1() {
+      this.click1 = true
       this.resetMouseDownTime()
       this.mouseDownInterval = setInterval(
         () => {
@@ -143,6 +157,7 @@ export default {
       )
     },
     mouseDown2() {
+      this.click2 = true
       this.resetMouseDownTime()
       this.mouseDownInterval = setInterval(
         () => {
@@ -154,6 +169,7 @@ export default {
       )
     },
     mouseDown3() {
+      this.click3 = true
       this.resetMouseDownTime()
       this.mouseDownInterval = setInterval(
         () => {
@@ -165,6 +181,9 @@ export default {
       )
     },
     mouseUp() {
+      this.click1 = false
+      this.click2 = false
+      this.click3 = false
       clearInterval(this.mouseDownInterval)
     },
     resetGlass() {
@@ -240,6 +259,7 @@ export default {
 </script>
 
 <style>
+
 .app {
   display: flex;
   margin-top: 50px;
@@ -290,4 +310,12 @@ export default {
   width: 100px;
   position: relative;
 }
+.glass_drop {
+  width: 20px;
+  height: 400px;
+  margin: -166px 90px 0;
+  position: absolute;
+  opacity:1;
+}
+
 </style>
