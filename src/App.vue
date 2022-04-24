@@ -23,7 +23,7 @@ export default {
     return {
       glass: 0,
       ADD_UNIT: 10,
-      time: 0
+      time: `制限時間 0:30`
     }
   },
   computed:{
@@ -52,17 +52,17 @@ export default {
       const start_time=new Date();
       const finish_time=start_time.getTime()+time_limit*1000;
       const self=this;
-      setInterval(
-          function(){
-              console.log(`aaa`);
-              const timer=self.countdown(finish_time);
-              self.time=`残り ${timer[0]}:${timer[1]}`;
-              if (timer[1]==0) {
-                self.time=`終了`;
-              }
-          },
-          1000
-      )
+      let timerId=setInterval(function(){
+        const timer=self.countdown(finish_time);
+        self.time=`残り ${timer[0]}:${timer[1]}`;
+        if (timer[1]==0) {
+          self.time=`終了`;
+          clearInterval(timerId);
+        }
+        else if(timer[1]<10){
+          self.time=`残り ${timer[0]}:0${timer[1]}`;
+        }
+      }, 1000);
     }
   }
 }
