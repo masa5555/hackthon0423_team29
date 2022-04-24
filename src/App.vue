@@ -29,6 +29,7 @@
         }"
       ></div>
     </div>
+    {{ScoreCalculation(CreateRandomColor(),add_color)}}
   </div>
 </template>
 
@@ -64,6 +65,7 @@ export default {
       count1: 0,
       count2: 0,
       count3: 0,
+      score: 0
       //random: 1
     }
   },
@@ -171,7 +173,11 @@ export default {
         g : Math.floor(Math.random() * 256),
         b : Math.floor(Math.random() * 256)
       }
-    }
+    },
+    ScoreCalculation(color_random,color_create){
+      this.score = Math.ceil((255 - Math.abs(color_random.r-color_create.r)) * (255 - Math.abs(color_random.g-color_create.g)) * (255 - Math.abs(color_random.b-color_create.b)) / (255 ** 3)* 100)
+      return this.score      
+      }
   }
 }
 </script>
