@@ -1,17 +1,25 @@
 <template>
   <div id="app">
-
+    <p>{{time}}</p>
+    <button @click="recalc()" v-bind:disabled="active">開始</button>
+    <br />
+    <br />
+    お題
+    <div :style="{background:CallRandom,height:'50px',width:'50px',padding:'100px'}"></div>
     <button
       @mousedown="mouseDown1()"
       @mouseup="mouseUp()"
+      v-bind:disabled="!active"
     >追加する1(赤)</button>
     <button
       @mousedown="mouseDown2()"
       @mouseup="mouseUp()"
+      v-bind:disabled="!active"
     >追加する2(緑)</button>
     <button
       @mousedown="mouseDown3()"
       @mouseup="mouseUp()"
+      v-bind:disabled="!active"
     >追加する3(青)</button>
     <button
       @click="resetGlass()"
@@ -68,6 +76,9 @@ export default {
   data() {
     return {
       glass: 0,
+      ADD_UNIT: 10,
+      time: `制限時間 0:30`,
+      active: false,
       mouseDownInterval: null,
       count1: 0,
       count2: 0,
@@ -96,8 +107,11 @@ export default {
     },
     computeCallrgb(){
       return this.rgb_to_css(this.add_color)
-    }
-  },
+      },
+    CallRandom(){
+      return this.rgb_to_css(this.CreateRandomColor())
+      }
+    },
   methods: {
     resetMouseDownTime() {
       this.mouseDownTime = 0
@@ -154,7 +168,41 @@ export default {
       this.count3 = 0
     },
     addGlass() {
-      this.glass += 1
+      this.glass = this.glass + 1
+    },
+    countdown(finish_time){
+      const now=new Date();
+      const rest=finish_time-now.getTime();
+      const sec=Math.floor(rest/1000)%60;
+      const min=Math.floor(rest/1000/60)%60;
+      const rest_time=[min, sec];
+      return rest_time;
+    },
+    recalc(){
+      const self=this;
+      self.active=true;
+      self.time=`残り 0:30`;
+      const time_limit=30;
+      const start_time=new Date();
+      const finish_time=start_time.getTime()+time_limit*1000;
+
+      while(new Date()-start_time<500);
+      self.time=`残り 0:29`;
+
+      let timerId=setInterval(function(){
+
+        const timer=self.countdown(finish_time);
+        self.time=`残り ${timer[0]}:${timer[1]}`;
+        if (timer[1]==0) {
+          self.time=`終了`;
+          self.active=false;
+          clearInterval(timerId);
+        }
+        else if(timer[1]<10){
+          self.time=`残り ${timer[0]}:0${timer[1]}`;
+        }
+
+      }, 1000);
     },
     addGlass1() {
       this.addGlass()
@@ -173,6 +221,13 @@ export default {
       const g = (parseInt(color.g)).toString(16).padStart(2, '0')
       const b = (parseInt(color.b)).toString(16).padStart(2, '0')
       return `#${r}${g}${b}`
+    },
+    CreateRandomColor(){
+      return{
+        r : Math.floor(Math.random() * 256),
+        g : Math.floor(Math.random() * 256),
+        b : Math.floor(Math.random() * 256)
+      }
     }
   }
 }
