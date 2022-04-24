@@ -47,12 +47,14 @@ export default {
       return rest_time;
     },
     recalc(){
-      const time_limit=32;
+      const time_limit=31;
       this.time=`残り 0:30`;
       const start_time=new Date();
       const finish_time=start_time.getTime()+time_limit*1000;
       const self=this;
+
       let timerId=setInterval(function(){
+
         const timer=self.countdown(finish_time);
         self.time=`残り ${timer[0]}:${timer[1]}`;
         if (timer[1]==0) {
@@ -62,6 +64,7 @@ export default {
         else if(timer[1]<10){
           self.time=`残り ${timer[0]}:0${timer[1]}`;
         }
+
       }, 1000);
     }
   }
