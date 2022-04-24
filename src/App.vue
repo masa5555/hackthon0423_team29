@@ -7,17 +7,6 @@
       <br />
       <br />
       お題
-    <temp v-if="click1"><!--ボタンを押すと赤のジュースが出ます-->
-      <div class="glass_drop" :style="{background:'#ff0000'}"></div>
-    </temp>
-    <temp v-if="click2"><!--ボタンを押すと緑のジュースが出ます-->
-      <div class="glass_drop" :style="{background:'#00ff00'}"></div>
-    </temp>  
-    <temp v-if="click3"><!--ボタンを押すと青のジュースが出ます-->
-      <div class="glass_drop" :style="{background:'#0000ff'}"></div>
-    </temp>
-
-    <div class="glass_outer">
       <div
         :style="{
           background:CallRandom,
@@ -57,6 +46,15 @@
         <div class="bar-lower-left"></div>
         <div class="bar-lower-center">
           <div class="glass_outer">
+            <temp v-if="click1"><!--ボタンを押すと赤のジュースが出ます-->
+              <div class="glass_drop" :style="{background:'#ff0000'}"></div>
+            </temp>
+            <temp v-if="click2"><!--ボタンを押すと緑のジュースが出ます-->
+              <div class="glass_drop" :style="{background:'#00ff00'}"></div>
+            </temp>  
+            <temp v-if="click3"><!--ボタンを押すと青のジュースが出ます-->
+              <div class="glass_drop" :style="{background:'#0000ff'}"></div>
+            </temp>
             <div
               class="glass_inner"
               :style="{
