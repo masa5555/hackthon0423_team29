@@ -68,7 +68,7 @@ export default {
       glass: 0,
       ADD_UNIT: 10,
       time: `制限時間 0:30`,
-      active: false
+      active: false,
       mouseDownInterval: null,
       count1: 0,
       count2: 0,
